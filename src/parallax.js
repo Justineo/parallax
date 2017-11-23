@@ -44,7 +44,7 @@ const helpers = {
   },
 
   accelerate(element) {
-    helpers.css(element, 'transform', 'translate3d(0,0,0) rotate(0.0001deg)')
+    helpers.css(element, 'will-change', 'transform')
     helpers.css(element, 'transform-style', 'preserve-3d')
     helpers.css(element, 'backface-visibility', 'hidden')
   },
@@ -302,10 +302,12 @@ class Parallax {
         helpers.accelerate(layer)
       }
 
-      layer.style.position = index ? 'absolute' : 'relative'
-      layer.style.display = 'block'
-      layer.style.left = 0
-      layer.style.top = 0
+      if (!this.preserveLayout) {
+        layer.style.position = index ? 'absolute' : 'relative'
+        layer.style.display = 'block'
+        layer.style.left = 0
+        layer.style.top = 0
+      }
 
       let depth = helpers.data(layer, 'depth') || 0
       this.depthsX.push(helpers.data(layer, 'depth-x') || depth)
